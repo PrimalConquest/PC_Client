@@ -13,7 +13,7 @@ namespace PrimalConquest.Auth
     {
 
         [Header("Navigation")]
-        [SerializeField] string _nextScene = "MainMenu";
+        [SerializeField] string _nextScene = "GameMenu";
 
         [Header("Communication")]
         [SerializeField] UnityEvent<string> OnError;
@@ -43,6 +43,7 @@ namespace PrimalConquest.Auth
             //SetBusy(false);
         }
 
+
         public async void Register(string userName, string email, string password)
         {
             if (_busy) return;
@@ -56,8 +57,7 @@ namespace PrimalConquest.Auth
                 return; 
             }
 
-            CommitSession(response);
-            //SetBusy(false);
+            AuthSession.Clear();
         }
 
         public async Task DbHealth()
@@ -87,8 +87,8 @@ namespace PrimalConquest.Auth
             var (response, error) = await AuthService.Refresh(AuthSession.RefreshToken);
 
             if (error != null) 
-            { 
-                AuthSession.Clear(); 
+            {
+                AuthSession.Clear();
                 SetBusy(false);
                 OnError.Invoke("auto login failed"); 
                 return; 
@@ -107,7 +107,6 @@ namespace PrimalConquest.Auth
         void CommitSession(AuthResponseDTO r)
         {
             AuthSession.Save(r.AccessToken, r.RefreshToken, r.UserId, r.UserName);
-            AuthService.SetAuthToken(r.AccessToken);
             OnAuthComplete();
         }
 

@@ -46,8 +46,7 @@ public static class CommunicationService
 
         if (!response.IsSuccessStatusCode)
         {
-            var msg = TryParseError(responseText)
-                   ?? $"Server error ({(int)response.StatusCode})";
+            var msg = TryParseError(responseText) ?? $"Server error ({(int)response.StatusCode})";
             return (default, msg);
         }
 

@@ -1,5 +1,5 @@
 ﻿<Solution>
-  <Project Path="GenericEventSystem.Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="GenericEventSystem.Editor.csproj" />
   <Project Path="GenericEventSystem.csproj" />
 </Solution>

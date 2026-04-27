@@ -28,11 +28,11 @@ namespace PrimalConquest.Auth
         public static Task<(AuthResponseDTO response, string error)> Refresh(string refreshToken) =>
             CommunicationService.Post<AuthResponseDTO, RefreshRequestDTO>(Endpoints.Refresh(), new RefreshRequestDTO { RefreshToken = refreshToken });
 
-        public static async Task<string> Logout(string refreshToken)
+        public static async Task<string> Logout()
         {
             try
             {
-                var body    = (new RefreshRequestDTO { RefreshToken = refreshToken }).ToJson();
+                var body    = (new RefreshRequestDTO { RefreshToken = AuthSession.RefreshToken }).ToJson();
                 var content = new StringContent(body, Encoding.UTF8, "application/json");
                 await CommunicationService._client.PostAsync(Endpoints.LogOut(), content);
                 return null;

@@ -18,6 +18,7 @@ namespace PrimalConquest.Auth
 
         public static void Save(string accessToken, string refreshToken, string userId, string userName)
         {
+            AuthService.SetAuthToken(accessToken);
             SecureStorage.Set(AccessTokenKey,  accessToken);
             SecureStorage.Set(RefreshTokenKey, refreshToken);
             SecureStorage.Set(UserIdKey,       userId);
@@ -26,6 +27,7 @@ namespace PrimalConquest.Auth
 
         public static void Clear()
         {
+            AuthService.SetAuthToken("");
             SecureStorage.Delete(AccessTokenKey);
             SecureStorage.Delete(RefreshTokenKey);
             SecureStorage.Delete(UserIdKey);
