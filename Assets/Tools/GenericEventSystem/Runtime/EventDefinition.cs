@@ -13,13 +13,13 @@ namespace GenericEventSystem
     public class EventDefinition : ScriptableObject
     {
         private readonly List<EventListener> subs = new();
-
+#if DEBUG
         [SerializeField] private MonoScript payloadScript;
 
         public Type ChannelDataType => payloadScript != null
             ? payloadScript.GetClass()
             : null;
-
+#endif
 #if UNITY_EDITOR
 
         [SerializeField, HideInInspector] public EventData.EventData EditorPayload;

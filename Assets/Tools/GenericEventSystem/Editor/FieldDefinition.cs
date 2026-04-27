@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using System;
 
 namespace GenericEventSystem.Editor
@@ -9,3 +11,5 @@ namespace GenericEventSystem.Editor
         public FieldType Type = null;
     }
 }
+
+#endif
