@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2937fd8e4a65d94eb2a39f9f5911f1e, type: 3}
+  m_Name: C_BasicFast
+  m_EditorClassIdentifier: 
+  UnitId: Commanders.BasicFast
+  Icon: {fileID: 5727293038337581485, guid: a1a8b562b70d092479f4b9a567a957f9, type: 3}
+  InGamePrefab: {fileID: 0}
+  DisplayName:
+    _key: Falcon
+  Description:
+    _key: FalconDescription
+  Color: 4

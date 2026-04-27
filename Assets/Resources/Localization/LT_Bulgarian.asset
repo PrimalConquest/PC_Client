@@ -26,3 +26,9 @@ MonoBehaviour:
     Value: "\u041F\u0430\u0440\u043E\u043B\u0430"
   - Key: Username
     Value: "\u0418\u043C\u0435"
+  - Key: Battle
+    Value: "\u0411\u0438\u0442\u043A\u0430"
+  - Key: Officers
+    Value: "\u041E\u0444\u0438\u0446\u0435\u0440\u0438"
+  - Key: Commanders
+    Value: "\u041A\u043E\u043C\u0430\u043D\u0434\u0438\u0440\u0438"

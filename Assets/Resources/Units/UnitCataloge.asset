@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0bc417ed21cb7948a00b452b3d45aca, type: 3}
+  m_Name: UnitCataloge
+  m_EditorClassIdentifier: 
+  Commanders:
+  - {fileID: 11400000, guid: 5ad93934365e3674086d7e6ca10466fd, type: 2}
+  - {fileID: 11400000, guid: 9ce2bf5586702f24f851d083bf668e8a, type: 2}
+  - {fileID: 11400000, guid: 9ce2bf5586702f24f851d083bf668e8a, type: 2}
+  Officers:
+  - {fileID: 11400000, guid: f5d78402b627a9b43a883504f884a624, type: 2}
+  - {fileID: 11400000, guid: a7644a73f1ab02444ad3b1b23b6869d2, type: 2}
+  - {fileID: 11400000, guid: 38dc7a6562161b545bde04b230cd29d9, type: 2}

@@ -56,8 +56,7 @@ namespace PrimalConquest.Auth
                 OnError.Invoke(error); 
                 return; 
             }
-
-            AuthSession.Clear();
+            CommitSession(response);
         }
 
         public async Task DbHealth()

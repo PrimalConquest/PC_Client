@@ -16,6 +16,5 @@ public class UnitDefinition : ScriptableObject
     public LocalizedString Description;
 
     [Header("Rules")]
-    public EColor Color;
-    public bool IsUnlocked = true;              
+    public EColor Color;         
 }
