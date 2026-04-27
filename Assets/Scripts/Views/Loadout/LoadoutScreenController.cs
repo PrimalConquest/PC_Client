@@ -24,6 +24,9 @@ public class LoadoutScreenController : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] UnitCardView _unitCardPrefab;
 
+    [Header("Battle")]
+    [SerializeField] Button _battleButton;
+
     public void Init()
     {
         Instance = this;
@@ -42,6 +45,12 @@ public class LoadoutScreenController : MonoBehaviour
     {
         RefreshSlots();
         RebuildCatalog();
+        HandleButtonValid();
+    }
+
+    void HandleButtonValid()
+    {
+        _battleButton.interactable = !_vm.State.IsCommanderSlotEmpty();
     }
 
     void RefreshSlots()

@@ -8,5 +8,5 @@ public static class LoadoutService
         CommunicationService.Get<LoadoutDTO>(Endpoints.Loadout(AuthSession.UserId));
 
     public static Task<(LoadoutDTO result, string error)> SaveLoadout(LoadoutDTO dto) =>
-        CommunicationService.Post<LoadoutDTO, LoadoutDTO>(Endpoints.Loadout(AuthSession.UserId), dto);
+        CommunicationService.Put<LoadoutDTO, LoadoutDTO>(Endpoints.Loadout(AuthSession.UserId), dto);
 }

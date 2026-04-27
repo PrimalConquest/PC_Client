@@ -8,7 +8,7 @@ public class LoadoutState
 
     public const int MaxOfficers = 3;
 
-    public void SetCommander(string id) => CommanderId = "Commanders." + id;
+    public void SetCommander(string id) => CommanderId = id;
 
     public bool TrySetOfficer(int slot, string id)
     {
@@ -29,6 +29,8 @@ public class LoadoutState
     public string GetOfficerId(int slot) =>
         slot < OfficerIds.Count ? OfficerIds[slot] : "";
 
+    public bool IsCommanderSlotEmpty() =>
+        string.IsNullOrEmpty(CommanderId);
     public bool IsOfficerSlotEmpty(int slot) =>
         string.IsNullOrEmpty(GetOfficerId(slot));
 

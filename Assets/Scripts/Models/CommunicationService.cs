@@ -87,6 +87,38 @@ public static class CommunicationService
         catch (Exception ex) { return (default, $"Unexpected response: {ex.Message}"); }
     }
 
+    public static async Task<(R result, string error)> Put<R, S>(string path, DTO<S> body) where S : class where R : class
+    {
+        var json    = body.ToJson();
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        HttpResponseMessage response;
+        string responseText;
+        try
+        {
+            Debug.Log($"HTTP put {_client.BaseAddress}{path}");
+            response     = await _client.PutAsync(path, content);
+            responseText = await response.Content.ReadAsStringAsync();
+        }
+        catch (TaskCanceledException)
+        {
+            return (default, "Request timed out. Check your connection.");
+        }
+        catch (HttpRequestException ex)
+        { 
+            return (default, $"Network error: {ex.Message}");
+        }
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var msg = TryParseError(responseText) ?? $"Server error ({(int)response.StatusCode})";
+            return (default, msg);
+        }
+
+        try { return (DTO<R>.FromJson(responseText), null); }
+        catch (Exception ex) { return (default, $"Unexpected response: {ex.Message}"); }
+    }
+
     static string TryParseError(string json)
     {
         if (string.IsNullOrWhiteSpace(json)) return null;

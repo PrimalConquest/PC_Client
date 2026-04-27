@@ -1477,6 +1477,7 @@ MonoBehaviour:
   _commanderCatalogContainer: {fileID: 1962055653}
   _officerCatalogContainer: {fileID: 2122196734}
   _unitCardPrefab: {fileID: 3813953128452233381, guid: fbe5a4e55735e8147bb9cd2cb57b111f, type: 3}
+  _battleButton: {fileID: 1976873056}
 --- !u!4 &984667656
 Transform:
   m_ObjectHideFlags: 0
@@ -2391,7 +2392,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _catalogue: {fileID: 11400000, guid: 13c0410ed1630ca459d8a7044c8a405d, type: 2}
-  _defaultCommanderId: Basic
+  _defaultCommanderId: Commanders.Basic
   OnLoadoutChanged:
     m_PersistentCalls:
       m_Calls:
@@ -2545,6 +2546,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2850281010932064669, guid: ef7d054b7dab4f744926af02d529be41, type: 3}
   m_PrefabInstance: {fileID: 1976873054}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1976873056 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6622956407890323138, guid: ef7d054b7dab4f744926af02d529be41, type: 3}
+  m_PrefabInstance: {fileID: 1976873054}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1977408148
 GameObject:
   m_ObjectHideFlags: 0

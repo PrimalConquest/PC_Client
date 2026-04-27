@@ -26,6 +26,11 @@ public class LoadoutViewModel : MonoBehaviour
 
     public async void SetCommander(string unitId)
     {
+        if(!Catalogue.IsValidCommander(unitId))
+        {
+            OnError.Invoke(LocalizedString.Get("InvalidCommanderId"));
+            return;
+        }
         State.SetCommander(unitId);
         OnLoadoutChanged.Invoke();
         await SaveAsync();
@@ -51,13 +56,25 @@ public class LoadoutViewModel : MonoBehaviour
 
     async Task LoadAsync()
     {
-        if (!AuthSession.IsLoggedIn) 
+        if (!AuthSession.IsLoggedIn)
         {
             OnError.Invoke(LocalizedString.Get("Not logged in"));
-            return; 
+            return;
         }
 
+        // Restore the access token into the HttpClient (lost on domain reload / fresh app start).
+        AuthService.SetAuthToken(AuthSession.AccessToken);
+
         var (dto, err) = await LoadoutService.GetLoadout();
+
+        // Access token expired — silently refresh and retry once.
+        /*if (err != null && err.Contains("401"))
+        {
+            var (refreshed, refreshErr) = await AuthService.Refresh(AuthSession.RefreshToken);
+            if (refreshErr != null || refreshed == null) { return; }
+            AuthSession.Save(refreshed.AccessToken, refreshed.RefreshToken, refreshed.UserId, refreshed.UserName);
+            (dto, err) = await LoadoutService.GetLoadout();
+        }*/
         if (err != null || dto == null) 
         {
             OnError.Invoke(LocalizedString.Get("Error fetching loadout"));
@@ -88,8 +105,6 @@ public class LoadoutViewModel : MonoBehaviour
 
     async void ApplyDefaults()
     {
-        State = new LoadoutState { CommanderId = _defaultCommanderId };
-        OnLoadoutChanged.Invoke();
-        await SaveAsync();
+        State.SetCommander(_defaultCommanderId);
     }
 }

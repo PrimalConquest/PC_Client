@@ -15,7 +15,7 @@ MonoBehaviour:
   Commanders:
   - {fileID: 11400000, guid: 5ad93934365e3674086d7e6ca10466fd, type: 2}
   - {fileID: 11400000, guid: 9ce2bf5586702f24f851d083bf668e8a, type: 2}
-  - {fileID: 11400000, guid: 9ce2bf5586702f24f851d083bf668e8a, type: 2}
+  - {fileID: 11400000, guid: bfd522e4ef6912e4989ed9e7bd21ab7d, type: 2}
   Officers:
   - {fileID: 11400000, guid: f5d78402b627a9b43a883504f884a624, type: 2}
   - {fileID: 11400000, guid: a7644a73f1ab02444ad3b1b23b6869d2, type: 2}
