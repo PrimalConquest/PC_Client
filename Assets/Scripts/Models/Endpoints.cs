@@ -10,5 +10,8 @@ public static class Endpoints
     public static string Refresh() => _dbPrefix + "/auth/refresh";
     public static string LogOut() => _dbPrefix + "/auth/logout";
     public static string Loadout(string userId) => _dbPrefix + $"/loadout/{userId}";
-    public static string Stats(string userId) => _dbPrefix + $"/stats/{userId}";
+    public static string Stats(string userId)   => _dbPrefix + $"/stats/{userId}";
+
+    static string _mmPrefix = "/api/mm";
+    public static string MatchmakingHub() => _mmPrefix + "/queue";
 }

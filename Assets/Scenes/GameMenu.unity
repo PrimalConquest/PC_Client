@@ -316,6 +316,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 984667656}
+  - {fileID: 2045004458}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &263358710
@@ -1004,6 +1005,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _loadoutViewModel: {fileID: 1884964531}
   _loadoutScreenController: {fileID: 984667655}
+  _statScreenController: {fileID: 2045004457}
+  _playerNameText: {fileID: 1977408150}
 --- !u!224 &780479555 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6841545118297681463, guid: 524fc39e595b59f45b8b898cecb6c75c, type: 3}
@@ -2636,6 +2639,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1977408148}
   m_CullTransparentMesh: 1
+--- !u!1 &2045004456
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2045004458}
+  - component: {fileID: 2045004457}
+  m_Layer: 0
+  m_Name: StatScreenController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2045004457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045004456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea88bb65515e0204a81fbec7342af1b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rpText: {fileID: 888543750}
+--- !u!4 &2045004458
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045004456}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 262968067}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2119239064
 GameObject:
   m_ObjectHideFlags: 0

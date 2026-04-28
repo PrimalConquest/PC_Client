@@ -62,19 +62,7 @@ public class LoadoutViewModel : MonoBehaviour
             return;
         }
 
-        // Restore the access token into the HttpClient (lost on domain reload / fresh app start).
-        AuthService.SetAuthToken(AuthSession.AccessToken);
-
         var (dto, err) = await LoadoutService.GetLoadout();
-
-        // Access token expired — silently refresh and retry once.
-        /*if (err != null && err.Contains("401"))
-        {
-            var (refreshed, refreshErr) = await AuthService.Refresh(AuthSession.RefreshToken);
-            if (refreshErr != null || refreshed == null) { return; }
-            AuthSession.Save(refreshed.AccessToken, refreshed.RefreshToken, refreshed.UserId, refreshed.UserName);
-            (dto, err) = await LoadoutService.GetLoadout();
-        }*/
         if (err != null || dto == null) 
         {
             OnError.Invoke(LocalizedString.Get("Error fetching loadout"));
@@ -103,7 +91,7 @@ public class LoadoutViewModel : MonoBehaviour
         if (err != null) OnError.Invoke($"Failed to save loadout: {err}");
     }
 
-    async void ApplyDefaults()
+    void ApplyDefaults()
     {
         State.SetCommander(_defaultCommanderId);
     }

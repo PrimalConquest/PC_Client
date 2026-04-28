@@ -32,3 +32,5 @@ MonoBehaviour:
     Value: "\u041E\u0444\u0438\u0446\u0435\u0440\u0438"
   - Key: Commanders
     Value: "\u041A\u043E\u043C\u0430\u043D\u0434\u0438\u0440\u0438"
+  - Key: Leave Queue
+    Value: "\u041A\u044A\u043C \u043C\u0435\u043D\u044E\u0442\u043E"

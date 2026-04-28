@@ -65,9 +65,9 @@ namespace PrimalConquest.UI
             }
         }
 
-        public void OnHealthclicked()
+        public async void OnHealthclicked()
         {
-            _vm.DbHealth();
+            await _vm.DbHealth();
         }
 
         public void OnLoginClicked()
