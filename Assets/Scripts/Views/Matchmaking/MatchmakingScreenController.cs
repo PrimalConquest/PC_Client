@@ -21,12 +21,14 @@ public class MatchmakingScreenController : MonoBehaviour
     public async void OnLeaveClicked()
     {
         _leaveButton.interactable = false;
-        await _service.LeaveQueueAsync();
+        _service.LeaveQueueAsync();
     }
 
     // ── Event handlers ─────────────────────────────────────────────────────────
     public void HandleQueueJoined(int position) => SetStatus($"In queue: #{position}");
     public void HandleError(string msg)         => SetStatus($"Error: {msg}");
+    public void HandleMessage(string msg) => SetStatus($"{msg}");
+
     public void HandleMatchFound(string ip, int port)
     {
         SetStatus("Match found!");

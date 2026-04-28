@@ -128,6 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 462567215}
+  - component: {fileID: 462567216}
   m_Layer: 0
   m_Name: Setup
   m_TagString: Untagged
@@ -150,6 +151,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &462567216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462567214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4990ba67c7f4f64f840fc2c9bd14da9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _matchmakingService: {fileID: 1324406265}
+  _matchmakingScreenController: {fileID: 1321329948}
 --- !u!1 &809309223
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,15 +586,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnQueueLeft:
-    m_PersistentCalls:
-      m_Calls: []
   OnMatchFound:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1321329948}
         m_TargetAssemblyTypeName: MatchmakingScreenController, Assembly-CSharp
         m_MethodName: HandleMatchFound
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnMessage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1321329948}
+        m_TargetAssemblyTypeName: MatchmakingScreenController, Assembly-CSharp
+        m_MethodName: HandleMessage
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

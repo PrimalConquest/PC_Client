@@ -3,12 +3,16 @@ using PrimalConquest.Auth;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class LoadoutViewModel : MonoBehaviour
 {
     [Header("Catalogue")]
     [SerializeField] UnitCatalogue _catalogue;
     [SerializeField] string _defaultCommanderId;
+
+    [Header("Output Channels")]
+    [SerializeField] string _matchmakingScene;
 
     [Header("Output Channels")]
     [SerializeField] UnityEvent OnLoadoutChanged;
@@ -22,6 +26,16 @@ public class LoadoutViewModel : MonoBehaviour
     {
         Debug.Log("Inital load");
         await LoadAsync();
+    }
+
+    public void StartMatchmaking()
+    {
+        if(State.IsCommanderSlotEmpty())
+        {
+            OnError.Invoke(LocalizedString.Get("Cannot enter battle without commander"));
+            return;
+        }
+        SceneManager.LoadScene(_matchmakingScene);
     }
 
     public async void SetCommander(string unitId)

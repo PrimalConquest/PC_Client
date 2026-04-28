@@ -3,48 +3,101 @@ using Microsoft.AspNetCore.SignalR.Client;
 using PrimalConquest.Auth;
 using System;
 using System.Threading.Tasks;
-using UnityEditor.PackageManager;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-// Implements IMatchmakingClient so the compiler enforces correct method signatures.
-// _connection.On() still requires a name string; nameof() keeps it refactor-safe.
 public class MatchmakingService : MonoBehaviour, IMatchmakingClient
 {
-    //public static MatchmakingService Instance { get; private set; }
-
     public string BattleServerIp   { get; private set; } = "";
     public int    BattleServerPort { get; private set; }
 
     HubConnection _connection;
 
-
     [SerializeField] string _gameMenuSceneName = "GameMenu";
 
-    public UnityEvent<int> OnQueueJoined;
+    public UnityEvent<int>         OnQueueJoined;
     public UnityEvent<string, int> OnMatchFound;
-    public UnityEvent<string> OnError;
+    public UnityEvent<string> OnMessage;
+    public UnityEvent<string>      OnError;
+
+    bool _inQueue;
+
+    // ── Public API ─────────────────────────────────────────────────────────────
 
     public async void Init()
     {
-        //Instance = this;
-        await ConnectAndJoinAsync();
+        if (_connection != null)
+            await DisconnectAsync();
+
+        var token = AuthSession.AccessToken;
+
+        _connection = new HubConnectionBuilder()
+            .WithUrl(AuthConfig.BaseUrl + Endpoints.MatchmakingHub(), options =>
+            {
+                options.AccessTokenProvider = () => Task.FromResult(token);
+            })
+            .Build();
+
+        _connection.On<int>        (nameof(IMatchmakingClient.QueueJoined),     QueueJoined);
+        _connection.On             (nameof(IMatchmakingClient.QueueLeft),        QueueLeft);
+        _connection.On<string, int>(nameof(IMatchmakingClient.MatchFound),       MatchFound);
+        _connection.On<string>     (nameof(IMatchmakingClient.MatchmakingError), MatchmakingError);
+
+        _connection.Closed += ex =>
+        {
+            if (ex != null) OnError.Invoke($"Connection lost: {ex.Message}");
+            return Task.CompletedTask;
+        };
+
+        _inQueue = false;
+
+        try
+        {
+            await _connection.StartAsync();
+            OnMessage.Invoke("Joining queue....");
+            await _connection.InvokeAsync(nameof(IMatchmakingHub.JoinQueue));
+        }
+        catch (Exception ex)
+        {
+            OnError.Invoke($"Could not connect to matchmaking: {ex.Message}");
+            await DisconnectAsync();
+        }
+    }
+
+    public async void LeaveQueueAsync()
+    {
+        if (_connection == null)
+        {
+            OnError.Invoke("Could not leave queue — no active connection.");
+            return;
+        }
+        try   {
+            if(_inQueue)
+            {
+                OnMessage.Invoke("Leaving queue....");
+                await _connection.InvokeAsync(nameof(IMatchmakingHub.LeaveQueue));
+            }
+            else
+            {
+                await QueueLeft();
+            }
+        }
+        catch { }
     }
 
     // ── IMatchmakingClient ─────────────────────────────────────────────────────
-    // These are the real implementations — registered below via nameof().
 
     public Task QueueJoined(int position)
     {
         OnQueueJoined.Invoke(position);
+        _inQueue = true;
         return Task.CompletedTask;
     }
 
     public Task QueueLeft()
     {
-        OnError.Invoke(LocalizedString.Get("Leaving Queue..."));
+        OnMessage.Invoke("Going back to menu...");
         SceneManager.LoadScene(_gameMenuSceneName);
         return Task.CompletedTask;
     }
@@ -63,58 +116,23 @@ public class MatchmakingService : MonoBehaviour, IMatchmakingClient
         return Task.CompletedTask;
     }
 
-    // ── Connection lifecycle ───────────────────────────────────────────────────
-
-    public async Task ConnectAndJoinAsync()
-    {
-        if (_connection != null)
-            await DisconnectAsync();
-
-        _connection = new HubConnectionBuilder()
-            .WithUrl(AuthConfig.BaseUrl + Endpoints.MatchmakingHub(), options =>
-            {
-                options.AccessTokenProvider = () => Task.FromResult(AuthSession.AccessToken);
-            })
-            .Build();
-
-        _connection.On<int>         (nameof(IMatchmakingClient.QueueJoined),      QueueJoined);
-        _connection.On              (nameof(IMatchmakingClient.QueueLeft),         QueueLeft);
-        _connection.On<string, int> (nameof(IMatchmakingClient.MatchFound),        MatchFound); 
-        _connection.On<string>      (nameof(IMatchmakingClient.MatchmakingError),  MatchmakingError);
-
-        _connection.Closed += ex =>
-        {
-            if (ex != null) OnError?.Invoke($"Connection lost: {ex.Message}");
-            return Task.CompletedTask;
-        };
-
-        try
-        {
-            await _connection.StartAsync();
-            await _connection.InvokeAsync(nameof(IMatchmakingHub.JoinQueue));
-        }
-        catch (Exception ex)
-        {
-            OnError?.Invoke($"Could not connect to matchmaking: {ex.Message}");
-            await DisconnectAsync();
-        }
-    }
-
-    public async Task LeaveQueueAsync()
-    {
-        if (_connection == null) return;
-        try   { await _connection.InvokeAsync(nameof(IMatchmakingHub.LeaveQueue)); }
-        catch { }
-        await DisconnectAsync();
-    }
+    // ── Internal ───────────────────────────────────────────────────────────────
 
     async Task DisconnectAsync()
     {
-        if (_connection == null) return;
+        if (_connection == null)
+        {
+            OnError.Invoke("Could not disconnect fro matchmaking — no active connection.");
+            return;
+        }
         try   { await _connection.StopAsync(); }
-        catch { }
+        catch (Exception ex) 
+        { 
+            OnError.Invoke($"Could not stop matchmaking connection: {ex.Message}"); 
+        }
         await _connection.DisposeAsync();
         _connection = null;
+
     }
 
     async void OnDestroy() => await DisconnectAsync();

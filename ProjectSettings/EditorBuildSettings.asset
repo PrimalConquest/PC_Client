@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameMenu.unity
     guid: 98bf601592c4b7d4cafaae64d2da745d
+  - enabled: 1
+    path: Assets/Scenes/Matchmaking.unity
+    guid: aab5b3fd49a5f0942b866b7962483503
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

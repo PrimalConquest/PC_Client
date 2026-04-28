@@ -2396,6 +2396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _catalogue: {fileID: 11400000, guid: 13c0410ed1630ca459d8a7044c8a405d, type: 2}
   _defaultCommanderId: Commanders.Basic
+  _matchmakingScene: Matchmaking
   OnLoadoutChanged:
     m_PersistentCalls:
       m_Calls:
@@ -2526,6 +2527,18 @@ PrefabInstance:
     - target: {fileID: 2850281010932064669, guid: ef7d054b7dab4f744926af02d529be41, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6622956407890323138, guid: ef7d054b7dab4f744926af02d529be41, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1884964531}
+    - target: {fileID: 6622956407890323138, guid: ef7d054b7dab4f744926af02d529be41, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartMatchmaking
+      objectReference: {fileID: 0}
+    - target: {fileID: 6622956407890323138, guid: ef7d054b7dab4f744926af02d529be41, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LoadoutViewModel, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8229948332557752565, guid: ef7d054b7dab4f744926af02d529be41, type: 3}
       propertyPath: m_Color.b
