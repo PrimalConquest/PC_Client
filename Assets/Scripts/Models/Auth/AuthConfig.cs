@@ -6,9 +6,9 @@ namespace PrimalConquest.Auth
     {
         // Swap to your ingress host for prod builds
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-        public const string BaseUrl = "http://172.21.44.89:80";
+        public const string BaseUrl = "http://178.105.78.86";//"http://172.21.44.89:80";
 #else
-        public const string BaseUrl = "http://172.21.44.89:80";
+        public const string BaseUrl = "http://178.105.78.86";
 #endif
     }
 }

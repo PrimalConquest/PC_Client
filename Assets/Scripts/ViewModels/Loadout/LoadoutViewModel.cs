@@ -85,7 +85,9 @@ public class LoadoutViewModel : MonoBehaviour
 
         if(dto.CommanderId == "")
         {
-            ApplyDefaults();
+            State.SetCommander(_defaultCommanderId);
+            OnLoadoutChanged.Invoke();
+            await SaveAsync();
             return;
         }
 
@@ -103,10 +105,5 @@ public class LoadoutViewModel : MonoBehaviour
         }
         var (_, err) = await LoadoutService.SaveLoadout(State.ToDTO());
         if (err != null) OnError.Invoke($"Failed to save loadout: {err}");
-    }
-
-    void ApplyDefaults()
-    {
-        State.SetCommander(_defaultCommanderId);
     }
 }

@@ -1,6 +1,7 @@
 using PrimalConquest.Auth;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameMenuSetup : MonoBehaviour
@@ -14,17 +15,17 @@ public class GameMenuSetup : MonoBehaviour
 
     async Task InitAsync()
     {
-        // Restore the Bearer token into the HttpClient on every app launch.
-        AuthService.SetAuthToken(AuthSession.AccessToken);
+        AuthSession.Load();
 
-        // Proactively refresh so all subsequent requests have a fresh token.
-        if (AuthSession.IsLoggedIn)
+        var (refreshed, err) = await AuthService.Refresh(AuthSession.RefreshToken);
+        if (err != null || refreshed == null)
         {
-            var (refreshed, err) = await AuthService.Refresh(AuthSession.RefreshToken);
-            if (err == null && refreshed != null)
-                AuthSession.Save(refreshed.AccessToken, refreshed.RefreshToken,
-                                 refreshed.UserId,      refreshed.UserName);
+            AuthSession.Clear();
+            SceneManager.LoadScene("MainMenu");
+            return;
         }
+        AuthSession.Save(refreshed.AccessToken, refreshed.RefreshToken,
+                         refreshed.UserId,      refreshed.UserName);
 
         if (_playerNameText != null) _playerNameText.text = AuthSession.UserName;
 

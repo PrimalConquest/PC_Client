@@ -14,4 +14,6 @@ public static class Endpoints
 
     static string _mmPrefix = "/api/mm";
     public static string MatchmakingHub() => _mmPrefix + "/queue";
+
+    public static string BattleHub() => "/hub/simulation";
 }

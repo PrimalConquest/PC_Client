@@ -76,6 +76,8 @@ namespace PrimalConquest.Auth
 
         async Task TryAutoRefreshAsync()
         {
+            AuthSession.Load();
+
             if (!AuthSession.IsLoggedIn)
             {
                 SetBusy(false);

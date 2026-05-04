@@ -2,6 +2,7 @@ using MatchmakingComunication;
 using Microsoft.AspNetCore.SignalR.Client;
 using PrimalConquest.Auth;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,7 +15,8 @@ public class MatchmakingService : MonoBehaviour, IMatchmakingClient
 
     HubConnection _connection;
 
-    [SerializeField] string _gameMenuSceneName = "GameMenu";
+    [SerializeField] string _gameMenuSceneName  = "GameMenu";
+    [SerializeField] string _battleSceneName    = "Battle";
 
     public UnityEvent<int>         OnQueueJoined;
     public UnityEvent<string, int> OnMatchFound;
@@ -30,7 +32,8 @@ public class MatchmakingService : MonoBehaviour, IMatchmakingClient
         if (_connection != null)
             await DisconnectAsync();
 
-        var token = AuthSession.AccessToken;
+        var token      = AuthSession.AccessToken;
+        var mainThread = SynchronizationContext.Current;
 
         _connection = new HubConnectionBuilder()
             .WithUrl(AuthConfig.BaseUrl + Endpoints.MatchmakingHub(), options =>
@@ -39,10 +42,10 @@ public class MatchmakingService : MonoBehaviour, IMatchmakingClient
             })
             .Build();
 
-        _connection.On<int>        (nameof(IMatchmakingClient.QueueJoined),     QueueJoined);
-        _connection.On             (nameof(IMatchmakingClient.QueueLeft),        QueueLeft);
-        _connection.On<string, int>(nameof(IMatchmakingClient.MatchFound),       MatchFound);
-        _connection.On<string>     (nameof(IMatchmakingClient.MatchmakingError), MatchmakingError);
+        _connection.On<int>        (nameof(IMatchmakingClient.QueueJoined),     pos        => mainThread.Post(_ => QueueJoined(pos),        null));
+        _connection.On             (nameof(IMatchmakingClient.QueueLeft),        ()         => mainThread.Post(_ => QueueLeft(),              null));
+        _connection.On<string, int>(nameof(IMatchmakingClient.MatchFound),       (ip, port) => mainThread.Post(_ => MatchFound(ip, port),    null));
+        _connection.On<string>     (nameof(IMatchmakingClient.MatchmakingError), msg        => mainThread.Post(_ => MatchmakingError(msg),    null));
 
         _connection.Closed += ex =>
         {
@@ -55,8 +58,10 @@ public class MatchmakingService : MonoBehaviour, IMatchmakingClient
         try
         {
             await _connection.StartAsync();
+            Debug.Log("[Matchmaking] Connected, invoking JoinQueue...");
             OnMessage.Invoke("Joining queue....");
             await _connection.InvokeAsync(nameof(IMatchmakingHub.JoinQueue));
+            Debug.Log("[Matchmaking] JoinQueue returned — waiting for server callback");
         }
         catch (Exception ex)
         {
@@ -90,6 +95,7 @@ public class MatchmakingService : MonoBehaviour, IMatchmakingClient
 
     public Task QueueJoined(int position)
     {
+        Debug.Log($"[Matchmaking] QueueJoined pos={position}");
         OnQueueJoined.Invoke(position);
         _inQueue = true;
         return Task.CompletedTask;
@@ -97,6 +103,7 @@ public class MatchmakingService : MonoBehaviour, IMatchmakingClient
 
     public Task QueueLeft()
     {
+        Debug.Log("[Matchmaking] QueueLeft");
         OnMessage.Invoke("Going back to menu...");
         SceneManager.LoadScene(_gameMenuSceneName);
         return Task.CompletedTask;
@@ -104,14 +111,18 @@ public class MatchmakingService : MonoBehaviour, IMatchmakingClient
 
     public Task MatchFound(string serverIp, int serverPort)
     {
+        Debug.Log($"[Matchmaking] MatchFound {serverIp}:{serverPort}");
         BattleServerIp   = serverIp;
         BattleServerPort = serverPort;
+        BattleSession.Set(serverIp, serverPort);
         OnMatchFound.Invoke(serverIp, serverPort);
+        SceneManager.LoadScene(_battleSceneName);
         return Task.CompletedTask;
     }
 
     public Task MatchmakingError(string message)
     {
+        Debug.LogError($"[Matchmaking] MatchmakingError: {message}");
         OnError.Invoke(message);
         return Task.CompletedTask;
     }

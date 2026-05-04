@@ -18,7 +18,7 @@ public class MatchmakingScreenController : MonoBehaviour
     }
 
     // ── Button handler ─────────────────────────────────────────────────────────
-    public async void OnLeaveClicked()
+    public void OnLeaveClicked()
     {
         _leaveButton.interactable = false;
         _service.LeaveQueueAsync();
